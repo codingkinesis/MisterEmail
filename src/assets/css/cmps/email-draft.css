@@ -1,0 +1,10 @@
+.email-draft {
+    position: fixed;
+    top: 50%;
+    bottom: 0;
+    right: 15px;
+    background-color: white;
+    border: solid;
+    border-radius: 5px;
+    border-color: lightgray;
+}

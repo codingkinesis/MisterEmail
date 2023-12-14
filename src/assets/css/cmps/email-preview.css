@@ -1,0 +1,30 @@
+.email-preview {
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 20% 20% auto 40px;
+    padding-right: 45px;
+}
+
+.email-preview:hover {
+    text-decoration: none;
+}
+
+.email-preview .head {
+    color: black
+}
+
+.email-preview .body {
+    color: rgb(70, 70, 70);
+}
+
+.email-preview .bold {
+    font-weight: 550;
+}
+
+.email-preview .hide-extra-text {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,36 @@
+:root {
+  --email: white;
+  --email-border: grey;
+  --trash-hover: lightgrey;
+}
+
+.email-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.email-list li {
+  background-color: var(--email);
+  border: solid;
+  border-color: var(--email);
+  border-radius: 5px;
+  margin-top: 2px;
+  display: grid;
+  grid-template-columns: auto 30px;
+}
+
+.email-list li:hover {
+  border-color:var(--email-border);
+}
+
+.email-list button {
+  background-color: var(--email);
+  border: 0;
+  height: 30px;
+}
+
+.email-list button:hover {
+  background-color: var(--trash-hover);
+  border-radius: 50%;
+}
