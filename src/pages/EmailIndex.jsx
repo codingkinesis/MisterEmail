@@ -61,15 +61,23 @@ export function EmailIndex() {
     if(!emails) return <div>Loading...</div>
     return (
         <section className="email-index">
-            <section className="left">
+            <section className="layout">
+                <div className="logo">
+                    <img src={"imgLogo"} />
+                    Mister Email
+                </div>
+                <section className="filter">
+                    <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter}/>
+                </section>
+                <section className="aside">
                 <button className="btn-compose" onClick={composeEmail}>
                     <img src={imgCompose} />
                     Compose
                 </button>
             </section>
-            <section className="right">
-                <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter}/>
+                <section className="main">
                 <EmailList emails={emails} onDelete={onDeleteEmail}/>
+                </section>
             </section>
             {draft && <EmailDraft  
                 draft={draft} 

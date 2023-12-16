@@ -1,34 +1,60 @@
 .email-index {
     background-color:ghostwhite;
-    margin: 0;
-    min-height: 100%;
-    bottom: 0;
     padding: 10px;
-    min-height: 85vh;
 }
 
-.email-index .left,
-.email-index .right {
-    display: inline-block;
+.email-index .layout {
+    display: grid;
+    grid-template-columns: 200px minmax(450px, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "l f"
+        "a m";
+    gap: 10px;
 }
 
-.email-index .left {
-    width: 30%;
-    float: left;
+.email-index .filter {
+    grid-area: f;
+
+    display: grid;
+    align-items: center;
 }
 
-.email-index .right {
-    width: 70%;
-    float: right;
+.email-index .main {
+    grid-area: m;
+}
+
+.email-index .aside {
+    grid-area: a;
+}
+
+
+.email-index .logo{
+    grid-area: l;
+
+    height: 50px;
+    margin: -5px;
+    display: grid;
+    grid-template-columns: 50px auto;
+    align-items: center;
+}
+
+.email-index header .logo img{
+    height: 50px;
 }
 
 .email-index .btn-compose {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+
     padding: 10px;
     background-color:lightblue;
-    border: 0;
+    border: none;
     border-radius: 10px;
+    font-size: large;
 }
 
 .email-index .btn-compose img{
-    height: 20px;
+    height: 30px;
 }
