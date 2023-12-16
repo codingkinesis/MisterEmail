@@ -1,0 +1,26 @@
+.email-menu {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 3px;
+}
+
+.email-menu > * {
+    height: 30px;
+    font-size: medium;
+}
+
+.email-menu > *:hover{
+    background-color: antiquewhite;
+}
+
+.email-menu .selected {
+    background-color: lightsteelblue;
+}
+
+.email-menu button {
+    border: none;
+    background-color: ghostwhite;
+    text-align: left;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}

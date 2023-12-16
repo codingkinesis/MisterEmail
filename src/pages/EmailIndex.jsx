@@ -4,6 +4,7 @@ import { emailService } from "../services/email.service";
 import { EmailFilter } from "../cmp/EmailFilter";
 import { EmailDraft } from "../cmp/EmailDraft";
 import imgCompose from '../assets/imgs/writing.png';
+import { EmailMenu } from "../cmp/EmailMenu";
 
 export function EmailIndex() {
     const [emails, setEmails] = useState(null)
@@ -70,7 +71,7 @@ export function EmailIndex() {
                     <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter}/>
                 </section>
                 <section className="aside">
-                    
+                    <EmailMenu filterBy={filterBy} onSetFilter={onSetFilter}/>
                 </section>
                 <section className="main">
                     <EmailList emails={emails} onDelete={onDeleteEmail}/>

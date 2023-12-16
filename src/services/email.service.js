@@ -22,9 +22,10 @@ _createEmails()
 async function query(filterBy) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
-        const { text , isRead } = filterBy
+        const { text, isRead, menuOption} = filterBy
         emails = emails.filter(email =>{
-            return _doesEmailContainText(email, text)
+            return _checkEmailMenuOption(email, menuOption)
+            &&_doesEmailContainText(email, text)
             && _checkEmailByIsRead(email, isRead)
         })
     }
@@ -64,12 +65,25 @@ function createEmail(subject, body, sentAt, from, to) {
 function getDefaultFilter() {
     return {
         text: '',
-        isRead: -1 // 1=Read 0=Unread -1=All
+        isRead: -1, // 1=Read 0=Unread -1=All
+        menuOption: 'inbox' // options: inbox, sent
     }
 }
 
 function getUser() {
     return loggedinUser
+}
+
+function _checkEmailMenuOption({ from, to }, menuOption) {
+    switch(menuOption) {
+        case 'inbox':
+            return to.includes(loggedinUser.email)
+        case 'sent': 
+            return from.includes(loggedinUser.email)
+        default:
+            console.log('_checkEmailMenuOption: option not found')
+            return false
+    }
 }
 
 function _doesEmailContainText({ from, subject, body }, txt) {
@@ -96,7 +110,7 @@ function _createEmails() {
             sentAt : 1591133930594,
             removedAt : null, //for later use
             from: 'momo@momo.com',
-            to: 'user@appsus.com'},
+            to: loggedinUser.email},
 
             {id: 'e102',
             subject: 'Hello again',
@@ -106,7 +120,7 @@ function _createEmails() {
             sentAt : 1564133930594,
             removedAt : null, //for later use
             from: 'gron@gron.com',
-            to: 'user@appsus.com'},
+            to: loggedinUser.email},
 
             {id: 'e103',
             subject: 'Please stop',
@@ -116,7 +130,7 @@ function _createEmails() {
             sentAt : 1559135930594,
             removedAt : null, //for later use
             from: 'doggy@doggy.com',
-            to: 'user@appsus.com'},
+            to: loggedinUser.email},
 
             {id: 'e104',
             subject: 'Thanks again $$',
@@ -126,7 +140,17 @@ function _createEmails() {
             sentAt : 1551136208594,
             removedAt : null, //for later use
             from: 'ghj@ghj.com',
-            to: 'user@appsus.com',}
+            to: loggedinUser.email,},
+
+            {id: 'e105',
+            subject: 'Great movie!',
+            body: `I really enjoyed the movie you advised me to watch.`,
+            isRead: true,
+            isStarred: false,
+            sentAt : 1565136208594,
+            removedAt : null, //for later use
+            from: loggedinUser.email,
+            to: 'jojo@jojo',}
         ]
         utilService.saveToStorage(STORAGE_KEY, emails)
     }
