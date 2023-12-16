@@ -60,6 +60,8 @@ export function EmailIndex() {
     }
 
     if(!emails) return <div>Loading...</div>
+    const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead}
+    const filterByMenu = {menuOption: filterBy.menuOption}
     return (
         <section className="email-index">
             <section className="layout">
@@ -68,10 +70,10 @@ export function EmailIndex() {
                     Compose
                 </button>
                 <section className="filter">
-                    <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter}/>
+                    <EmailFilter filterBy={filterByFilter} onSetFilter={onSetFilter}/>
                 </section>
                 <section className="aside">
-                    <EmailMenu filterBy={filterBy} onSetFilter={onSetFilter}/>
+                    <EmailMenu filterBy={filterByMenu} onSetFilter={onSetFilter}/>
                 </section>
                 <section className="main">
                     <EmailList emails={emails} onDelete={onDeleteEmail}/>
