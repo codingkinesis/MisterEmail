@@ -4,7 +4,6 @@ import { emailService } from "../services/email.service";
 import { EmailFilter } from "../cmp/EmailFilter";
 import { EmailDraft } from "../cmp/EmailDraft";
 import imgCompose from '../assets/imgs/writing.png';
-import imgLogo from '../assets/imgs/logo.png';
 
 export function EmailIndex() {
     const [emails, setEmails] = useState(null)
@@ -63,18 +62,15 @@ export function EmailIndex() {
     return (
         <section className="email-index">
             <section className="layout">
-                <div className="logo">
-                    <img src={imgLogo} />
-                    Mister Email
-                </div>
+                <button className="btn-compose" onClick={composeEmail}>
+                    <img src={imgCompose} />
+                    Compose
+                </button>
                 <section className="filter">
                     <EmailFilter filterBy={filterBy} onSetFilter={onSetFilter}/>
                 </section>
                 <section className="aside">
-                    <button className="btn-compose" onClick={composeEmail}>
-                        <img src={imgCompose} />
-                        Compose
-                    </button>
+                    
                 </section>
                 <section className="main">
                     <EmailList emails={emails} onDelete={onDeleteEmail}/>

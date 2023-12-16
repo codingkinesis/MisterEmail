@@ -7,7 +7,7 @@
     grid-template-columns: 200px minmax(450px, 1fr);
     grid-template-rows: auto 1fr;
     grid-template-areas:
-        "l f"
+        "c f"
         "a m";
     gap: 10px;
 }
@@ -27,22 +27,9 @@
     grid-area: a;
 }
 
-
-.email-index .logo{
-    grid-area: l;
-
-    height: 50px;
-    margin: -5px;
-    display: grid;
-    grid-template-columns: 50px auto;
-    align-items: center;
-}
-
-.email-index header .logo img{
-    height: 50px;
-}
-
 .email-index .btn-compose {
+    grid-area: c;
+
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;

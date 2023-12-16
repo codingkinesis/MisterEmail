@@ -1,10 +1,14 @@
 import { NavLink } from "react-router-dom";
+import imgLogo from '../assets/imgs/logo.png';
 
 export function AppHeader() {
 
     return <header className="app-header">
         <section className="container">
-            <h1>Mister Email</h1>
+            <div className="logo">
+                    <img src={imgLogo} />
+                    Mister Email
+            </div>
             <nav>
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/Email">Email</NavLink>

@@ -1,5 +1,5 @@
 .app-header {
-    background-color: darkslateblue;
+    background-color:cornflowerblue;
     color: white;
 
 }
@@ -10,9 +10,18 @@
     justify-content: space-between;
 }
 
-.app-header h1.logo {
+.app-header .logo {
     flex-grow: 1;
     font-weight: 600;
+    height: 50px;
+    margin: -5px;
+    display: grid;
+    grid-template-columns: 50px auto;
+    align-items: center;
+}
+
+.app-header .logo img{
+    height: 50px;
 }
 
 .app-header .back {
