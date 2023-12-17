@@ -1,0 +1,4 @@
+.email-filter {
+    display: grid;
+    grid-template-columns: auto 1fr repeat(6, auto);
+}

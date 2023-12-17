@@ -14,8 +14,8 @@ export function EmailFilter({ filterBy , onSetFilter}) {
 
     const { text, isRead } = filterByToEdit
     return (
-        <form>
-            <label htmlFor="text-search">Search for mail</label>
+        <form className="email-filter">
+            <label htmlFor="text-search">Search mail</label>
             <input onChange={handleChange} id="text-search" value={text} name="text" type="text"/>
 
             <input type="radio" onChange={handleChange} id="read-search" name="isRead" value={1} checked={isRead == 1}/>
