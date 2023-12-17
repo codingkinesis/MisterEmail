@@ -9,8 +9,8 @@
     font-size: medium;
 }
 
-.email-menu > *:hover{
-    background-color: antiquewhite;
+.email-menu > *:hover:not(.selected){
+    filter: brightness(90%);
 }
 
 .email-menu .selected {
