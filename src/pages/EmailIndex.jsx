@@ -13,7 +13,7 @@ export function EmailIndex() {
 
     useEffect(() => {
         loadEmails()
-    },[emails, filterBy])
+    },[emails, filterBy, draft])
 
     async function loadEmails() {
         try{
@@ -42,21 +42,41 @@ export function EmailIndex() {
 
     function composeEmail() {
         if(!draft)
-            setDraft(emailService.createEmail('','',0,emailService.getUser.email,''))
+            setDraft(emailService.createEmail('','',0,null,''))
     }
 
     function onEditDraft(draftEdit) {
         setDraft(prevDraft => ({...prevDraft, ...draftEdit}))
     }
 
-    function onSubmitDraft() {
-        console.log('submited')
-        setDraft(null)
+    async function onSaveDraft(draftEdit) {
+        try{
+            const savedDraft = await emailService.save(draftEdit)
+            setDraft(prevDraft => ({...prevDraft, ...savedDraft}))
+        } catch (err) {
+            alert('Failed to save draft.')
+            //console.error(err)
+        }
+        
+    }
+
+    function onSubmitDraft(draftEdit) {
+        try{
+            emailService.save({...draftEdit, from: emailService.getUser().email})
+            setDraft(null)
+        } catch (err) {
+            alert('Failed to submit draft.')
+            //console.error(err)
+        }
     }
 
     function onCancelDraft() {
         console.log('canceled')
         setDraft(null)
+    }
+
+    function onOpenDraft(draft) {
+        setDraft(draft)
     }
 
     if(!emails) return <div>Loading...</div>
@@ -76,13 +96,17 @@ export function EmailIndex() {
                     <EmailMenu filterBy={filterByMenu} onSetFilter={onSetFilter}/>
                 </section>
                 <section className="main">
-                    <EmailList emails={emails} onDelete={onDeleteEmail}/>
+                    <EmailList 
+                        emails={emails}
+                        onDelete={onDeleteEmail}
+                        onOpenDraft={onOpenDraft}/>
                 </section>
             </section>
             {draft && <EmailDraft  
-                draft={draft} 
-                onEditDraft={onEditDraft}  
-                onSubmitDraft={onSubmitDraft} 
+                draft={draft}
+                onEditDraft={onEditDraft}
+                onSaveDraft={onSaveDraft}  
+                onSubmitDraft={onSubmitDraft}
                 onCancelDraft={onCancelDraft}/>}
         </section>
     )

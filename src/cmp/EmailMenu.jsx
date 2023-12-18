@@ -12,13 +12,15 @@ export function EmailMenu({ filterBy , onSetFilter}) {
     }
 
     const { menuOption } = filterByToEdit
-    let inbox, sent
+    let inbox, sent, draft
     menuOption === 'inbox' ? inbox = 'selected' : inbox = ''
     menuOption === 'sent' ? sent = 'selected' : sent = ''
+    menuOption === 'draft' ? draft = 'selected' : draft = ''
     return (
         <section className="email-menu">
             <button className={inbox} onClick={() => handleMenuChange('inbox')}>Inbox</button>
             <button className={sent} onClick={() => handleMenuChange('sent')}>Sent</button>
+            <button className={draft} onClick={() => handleMenuChange('draft')}>Drafts</button>
         </section>
     )
 }

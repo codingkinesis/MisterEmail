@@ -44,7 +44,6 @@ function save(emailToSave) {
     if (emailToSave.id) {
         return storageService.put(STORAGE_KEY, emailToSave)
     } else {
-        emailToSave.isOn = false
         return storageService.post(STORAGE_KEY, emailToSave)
     }
 }
@@ -53,7 +52,7 @@ function createEmail(subject, body, sentAt, from, to) {
     return {
         subject: subject,
         body: body, 
-        isRead: false,
+        isRead: true,
         isStarred: false,
         sentAt : sentAt,
         removedAt : null, //for later use
@@ -66,7 +65,7 @@ function getDefaultFilter() {
     return {
         text: '',
         isRead: -1, // 1=Read 0=Unread -1=All
-        menuOption: 'inbox' // options: inbox, sent
+        menuOption: 'inbox' // options: inbox, sent, draft
     }
 }
 
@@ -77,9 +76,11 @@ function getUser() {
 function _checkEmailMenuOption({ from, to }, menuOption) {
     switch(menuOption) {
         case 'inbox':
-            return to.includes(loggedinUser.email)
+            return to === loggedinUser.email
         case 'sent': 
-            return from.includes(loggedinUser.email)
+            return from === loggedinUser.email
+        case 'draft': 
+            return from === null
         default:
             console.log('_checkEmailMenuOption: option not found')
             return false

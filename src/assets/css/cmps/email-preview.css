@@ -1,16 +1,30 @@
 .email-preview {
-    margin: 2px;
     display: grid;
-    grid-template-columns: 20% 20% auto 40px;
-    padding-right: 45px;
+    grid-template-columns: 1fr;
 }
 
-.email-preview:hover {
+.email-preview > *{
+    display: grid;
+    grid-template-columns: 20% 20% 1fr 40px;
+    padding-right: 45px;
+    align-items: center;
+    font-size: medium;
+}
+
+.email-preview .link:hover {
     text-decoration: none;
+}
+
+.email-preview button:hover {
+    background: none;
 }
 
 .email-preview .head {
     color: black
+}
+
+.email-preview .draft {
+    color: red
 }
 
 .email-preview .body {

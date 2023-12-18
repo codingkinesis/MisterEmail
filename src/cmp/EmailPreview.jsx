@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export function EmailPreview({ email }) {
+export function EmailPreview({ email, onOpenDraft }) {
 
     function getDate(dateTime) {
         const date = new Date(dateTime)
@@ -14,12 +14,21 @@ export function EmailPreview({ email }) {
         return (num > 9) ? num + '' : '0' + num
     }
 
+    const { id, from, isRead, subject, body, sentAt } = email
     return (
-        <Link className="email-preview" to={`/Email/${email.id}`}>
-            <p className={`head ${!email.isRead && 'bold'} hide-extra-text`}>{email.from}</p>
-            <p className={`head ${!email.isRead && 'bold'} hide-extra-text`}>{email.subject}</p>
-            <p className="body hide-extra-text">{email.body}</p>
-            {getDate(email.sentAt)}
-        </Link>
+        <section className="email-preview">
+            { from && <Link className="link" to={`/Email/${id}`}>
+                <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{from}</p>
+                <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{subject}</p>
+                <p className="body hide-extra-text">{body}</p>
+                {getDate(sentAt)}
+            </Link>}
+            { !from && <button className="button-content" onClick={onOpenDraft}>
+                <p className={`draft hide-extra-text`}>draft</p>
+                <p className={`head hide-extra-text`}>{subject}</p>
+                <p className="body hide-extra-text">{body}</p>
+                {getDate(sentAt)}
+            </button>}
+        </section>
     )
 }
