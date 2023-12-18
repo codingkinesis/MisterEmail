@@ -5,6 +5,61 @@
     right: 15px;
     background-color: white;
     border: solid;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     border-color: lightgray;
+    width: 300px;
+
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 6px;
+}
+
+.email-draft .header-draft {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    background-color: lightblue;
+    padding: 3px;
+}
+
+.email-draft .main-draft {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
+    gap: 3px;
+    padding: 6px;
+}
+
+.email-draft .footer-draft {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    background-color: lightslategray;
+    gap: 3px;
+    padding: 3px;
+}
+
+.email-draft button {
+    border: none;
+    border-radius: 6px;
+}
+
+.email-draft .save-and-close {
+    background-color: lightblue;
+}
+
+.email-draft .delete {
+    background-color: lightslategray;
+}
+
+.email-draft .delete:hover {
+    filter: brightness(150%);
+}
+
+.email-draft .submit {
+    background-color: white;
+}
+
+.email-draft img {
+    height: 20px;
+    margin-top: 2px;
 }

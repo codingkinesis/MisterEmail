@@ -49,10 +49,10 @@ export function EmailIndex() {
         setDraft(prevDraft => ({...prevDraft, ...draftEdit}))
     }
 
-    async function onSaveDraft(draftEdit) {
+    async function onSaveAndCloseDraft(draftEdit) {
         try{
-            const savedDraft = await emailService.save(draftEdit)
-            setDraft(prevDraft => ({...prevDraft, ...savedDraft}))
+            await emailService.save(draftEdit)
+            setDraft(null)
         } catch (err) {
             alert('Failed to save draft.')
             //console.error(err)
@@ -70,9 +70,16 @@ export function EmailIndex() {
         }
     }
 
-    function onCancelDraft() {
-        console.log('canceled')
-        setDraft(null)
+    // add delete action
+    async function onDeleteDraft() {
+        try {
+            if(draft.id) {
+                await emailService.remove(draft.id)
+            }
+            setDraft(null)
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     function onOpenDraft(draft) {
@@ -105,9 +112,9 @@ export function EmailIndex() {
             {draft && <EmailDraft  
                 draft={draft}
                 onEditDraft={onEditDraft}
-                onSaveDraft={onSaveDraft}  
+                onSaveAndCloseDraft={onSaveAndCloseDraft}  
                 onSubmitDraft={onSubmitDraft}
-                onCancelDraft={onCancelDraft}/>}
+                onDeleteDraft={onDeleteDraft}/>}
         </section>
     )
 }
