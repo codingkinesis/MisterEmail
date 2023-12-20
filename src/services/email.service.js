@@ -93,9 +93,9 @@ function _doesEmailContainText({ from, subject, body }, txt) {
 }
 
 function _checkEmailByIsRead({ isRead }, isReadFilter) {
-    if(isReadFilter == -1) return true
-    if(isReadFilter == 1 && isRead) return true
-    if(isReadFilter == 0 && !isRead) return true
+    if(isReadFilter === 'all') return true
+    if(isReadFilter === 'read' && isRead) return true
+    if(isReadFilter === 'unread' && !isRead) return true
     return false
 }
 

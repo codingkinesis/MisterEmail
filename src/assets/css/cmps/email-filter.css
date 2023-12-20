@@ -1,4 +1,32 @@
 .email-filter {
     display: grid;
-    grid-template-columns: auto 1fr repeat(6, auto);
+    align-items: center;
+    grid-template-columns: minmax(auto, 300px) auto 1fr;
+}
+
+.email-filter .search-bar-container {
+    background-color: white;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    border: none;
+    border-radius: 20px;
+    padding: 6px;
+    align-items: center;
+}
+
+.email-filter .search-bar-container img {
+    margin: 3px;
+    height: 20px;
+}
+
+.email-filter .search-bar {
+    background-color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 6px;
+    font-size: large;
+}
+
+.email-filter .search-bar:focus {
+    outline: none;
 }

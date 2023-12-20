@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import imgSearch from '../assets/imgs/search.png';
 
 export function EmailFilter({ filterBy , onSetFilter}) {
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
@@ -15,15 +16,21 @@ export function EmailFilter({ filterBy , onSetFilter}) {
     const { text, isRead } = filterByToEdit
     return (
         <form className="email-filter">
-            <label htmlFor="text-search">Search mail</label>
-            <input onChange={handleChange} id="text-search" value={text} name="text" type="text"/>
-
-            <input type="radio" onChange={handleChange} id="read-search" name="isRead" value={1} checked={isRead == 1}/>
-            <label htmlFor="read-search">Read</label>
-            <input type="radio" onChange={handleChange} id="unread-search" name="isRead" value={0} checked={isRead == 0}/>
-            <label htmlFor="unread-search">Unread</label>
-            <input type="radio" onChange={handleChange} id="read-unread-search" name="isRead" value={-1} checked={isRead == -1}/>
-            <label htmlFor="read-unread-search">All</label>
+            <label className="search-bar-container">
+                <img src={imgSearch} />
+                <input className="search-bar"
+                    type="text" 
+                    name="text" 
+                    value={text} 
+                    placeholder={'Search mail'}
+                    onChange={handleChange} 
+                />
+            </label>
+            <select className="dropdown" name="isRead" onChange={handleChange}>
+                <option value={'read'}>Read</option>
+                <option value={'unread'}>Unread</option>
+                <option value={'all'}>All</option>
+            </select>
         </form>
     )
 }
