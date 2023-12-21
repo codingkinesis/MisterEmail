@@ -3,8 +3,8 @@ import { EmailList } from "../cmp/EmailList";
 import { emailService } from "../services/email.service";
 import { EmailFilter } from "../cmp/EmailFilter";
 import { EmailDraft } from "../cmp/EmailDraft";
-import imgCompose from '../assets/imgs/writing.png';
 import { EmailMenu } from "../cmp/EmailMenu";
+import imgCompose from '../assets/imgs/writing.png';
 
 export function EmailIndex() {
     const [emails, setEmails] = useState(null)
@@ -28,9 +28,7 @@ export function EmailIndex() {
     async function onDeleteEmail(emailId) {
         try {
             await emailService.remove(emailId)
-            setEmails(prevEmails => {
-                return prevEmails.filter(email => email.id !== emailId)
-            })
+            setEmails(prevEmails => prevEmails.filter(email => email.id !== emailId))
         } catch (err) {
             console.error(err);
         }
@@ -75,6 +73,7 @@ export function EmailIndex() {
         try {
             if(draft.id) {
                 await emailService.remove(draft.id)
+
             }
             setDraft(null)
         } catch (err) {
@@ -92,13 +91,13 @@ export function EmailIndex() {
     return (
         <section className="email-index">
             <section className="layout">
+                <section className="filter">
+                    <EmailFilter filterBy={filterByFilter} onSetFilter={onSetFilter}/>
+                </section>
                 <button className="btn-compose" onClick={composeEmail}>
                     <img src={imgCompose} />
                     Compose
                 </button>
-                <section className="filter">
-                    <EmailFilter filterBy={filterByFilter} onSetFilter={onSetFilter}/>
-                </section>
                 <section className="aside">
                     <EmailMenu filterBy={filterByMenu} onSetFilter={onSetFilter}/>
                 </section>

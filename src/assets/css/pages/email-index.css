@@ -4,7 +4,7 @@
 
 .email-index .layout {
     display: grid;
-    grid-template-columns: 200px minmax(450px, 1fr);
+    grid-template-columns: minmax(150px, 200px) minmax(400px, 1fr);
     grid-template-rows: auto 1fr;
     grid-template-areas:
         "c f"

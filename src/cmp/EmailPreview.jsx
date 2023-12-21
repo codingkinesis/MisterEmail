@@ -21,14 +21,12 @@ export function EmailPreview({ email, onOpenDraft }) {
                 <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{from}</p>
                 <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{subject}</p>
                 <p className="body hide-extra-text">{body}</p>
-                {getDate(sentAt)}
             </Link>}
-            { !from && <button className="button-content" onClick={onOpenDraft}>
+            { !from && <div className="button-content" onClick={onOpenDraft}>
                 <p className={`draft hide-extra-text`}>draft</p>
                 <p className={`head hide-extra-text`}>{subject}</p>
                 <p className="body hide-extra-text">{body}</p>
-                {getDate(sentAt)}
-            </button>}
+            </div>}
         </section>
     )
 }

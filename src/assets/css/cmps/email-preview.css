@@ -5,10 +5,10 @@
 
 .email-preview > *{
     display: grid;
-    grid-template-columns: 20% 20% 1fr 40px;
-    padding-right: 45px;
+    grid-template-columns: 20% 20% 1fr auto;
     align-items: center;
     font-size: medium;
+    height: 30px;
 }
 
 .email-preview .link:hover {
@@ -41,4 +41,16 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .email-preview > *{
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: center;
+        font-size: medium;
+        height: auto;
+    }
+
 }

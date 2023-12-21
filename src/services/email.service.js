@@ -64,7 +64,7 @@ function createEmail(subject, body, sentAt, from, to) {
 function getDefaultFilter() {
     return {
         text: '',
-        isRead: -1, // 1=Read 0=Unread -1=All
+        isRead: 'all',
         menuOption: 'inbox' // options: inbox, sent, draft
     }
 }
