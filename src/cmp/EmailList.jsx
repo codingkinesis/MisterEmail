@@ -1,7 +1,7 @@
 import { EmailPreview } from "./EmailPreview";
 import imgTrash from '../assets/imgs/trash.png'
 
-export function EmailList({emails, onDelete, onOpenDraft}) {
+export function EmailList({emails, onDelete}) {
 
     function getDate(dateTime) {
         const date = new Date(dateTime)
@@ -20,7 +20,7 @@ export function EmailList({emails, onDelete, onOpenDraft}) {
             <ul>
                 {emails.map(email =>
                     <li key={email.id}>
-                        <EmailPreview email={email} onOpenDraft={() => onOpenDraft(email)} />
+                        <EmailPreview email={email} />
                         <div className="not-hover-display">
                             {getDate(email.sentAt)}
                         </div>

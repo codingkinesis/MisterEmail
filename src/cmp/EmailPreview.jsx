@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export function EmailPreview({ email, onOpenDraft }) {
+    const params = useParams()
 
     function getDate(dateTime) {
         const date = new Date(dateTime)
@@ -14,19 +15,19 @@ export function EmailPreview({ email, onOpenDraft }) {
         return (num > 9) ? num + '' : '0' + num
     }
 
-    const { id, from, isRead, subject, body, sentAt } = email
+    const { id, from, isRead, subject, body } = email
     return (
         <section className="email-preview">
-            { from && <Link className="link" to={`/Email/${id}`}>
+            { from && <Link to={`/email/${id}`}>
                 <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{from}</p>
                 <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{subject}</p>
                 <p className="body hide-extra-text">{body}</p>
             </Link>}
-            { !from && <div className="button-content" onClick={onOpenDraft}>
+            { !from && <Link to={`/email/draft/${id}`}>
                 <p className={`draft hide-extra-text`}>draft</p>
                 <p className={`head hide-extra-text`}>{subject}</p>
                 <p className="body hide-extra-text">{body}</p>
-            </div>}
+            </Link>}
         </section>
     )
 }

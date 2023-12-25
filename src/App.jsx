@@ -1,8 +1,10 @@
-import { Route, HashRouter as Router, Routes } from 'react-router-dom'
+import { Navigate, Route, HashRouter as Router, Routes } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { EmailIndex } from './pages/EmailIndex'
 import { AppHeader } from './cmp/AppHeader'
 import { EmailDetails } from './pages/EmailDetails'
+import { EmailDraft } from './cmp/EmailDraft'
+import { EmailMenu } from './cmp/EmailMenu'
 
 export function App() {
 
@@ -14,8 +16,10 @@ export function App() {
                 <main>
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/Email" element={<EmailIndex />} />
-                        <Route path="/Email/:emailId" element={<EmailDetails />} />
+                        <Route path="/email/:menu" element={<EmailIndex />} >
+                                <Route path="/email/:menu/:emailId?" element={<EmailDraft />} />
+                        </Route>
+                        <Route path="/email/:emailId" element={<EmailDetails />} />
                     </Routes>
                 </main>
 

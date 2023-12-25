@@ -1,26 +1,63 @@
+import { useEffect, useState } from 'react'
 import imgTrash from '../assets/imgs/trash.png'
+import { emailService } from '../services/email.service'
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
 
-export function EmailDraft({ draft, onEditDraft, onSaveAndCloseDraft, onSubmitDraft, onDeleteDraft}) {
+export function EmailDraft() {
+    const [draft , setDraft] = useState()
+    const { onAddEmail, onUpdateEmail, onDeleteEmail } = useOutletContext()
+    const navigate = useNavigate()
+    const { emailId, menu } = useParams()
 
-    function editDraft(ev) {
-        const { name: feild, value } = ev.target
-        const time = new Date().getTime()
-        onEditDraft({...draft, [feild]: value , sentAt: time})
+    useEffect(() => {
+        if(emailId === 'new') setDraft(emailService.createEmail())
+        else if (emailId) loadEmail()
+    },[emailId])
+
+    async function loadEmail() {
+        try {
+            const email = await emailService.getById(emailId)
+            setDraft(email)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    function saveAndCloseDraft() {
-        const time = new Date().getTime()
-        onSaveAndCloseDraft({...draft, sentAt: time})
+    function handleChange(ev) {
+        const { name: feild, value, type } = ev.target
+        setDraft(prevDraft => ({...prevDraft, [feild]: value}))
+    }
+        
+    function onDeleteDraft() {
+        if (draft.id) onDeleteEmail(draft.id)
+        navigate(`/email/${menu}`)
     }
 
+    async function saveAndCloseDraft() {
+        try {
+            saveDraft(draft)
+            navigate(`/email/${menu}`)
+        } catch (error) {
+            console.log(error)
+            
+        }
+    }
+    
     function submitDraft(ev) {
         ev.preventDefault()
         if(isDraftReady()) {
-            const time = new Date().getTime()
-            onSubmitDraft({...draft, sentAt: time})
+            const user = emailService.getUser().email
+            saveDraft({...draft, from: user})
+            navigate(`/email/${menu}`)
         } else {
             alert('The email is not properly composed.')
         }
+    }
+    
+    function saveDraft(draft) {
+        draft.sentAt = new Date().getTime()
+        if (draft.id) onUpdateEmail(draft)
+        else onAddEmail(draft)
     }
 
     function isDraftReady() {
@@ -30,23 +67,24 @@ export function EmailDraft({ draft, onEditDraft, onSaveAndCloseDraft, onSubmitDr
         return false
     }
 
-    const { to, subject, body } = draft
+    if(!draft) return <div>Loading...</div>
+    const { to, subject, body, id } = draft
     return (
-        <form className="email-draft">
+        <form className="email-draft" onSubmit={submitDraft}>
             <section className="header-draft">
-                New Message
+                <h1>{id ? 'Edit' : 'New'} Message</h1>
                 <button className="save-and-close" type="button" onClick={saveAndCloseDraft}>X</button>  
             </section>
             <section className="main-draft">
                 <label htmlFor="draft-to">To </label>
-                <input type="text" onChange={(ev) => editDraft(ev)} value={to} id="draft-to" name="to"/>
+                <input type="text" onChange={(ev) => handleChange(ev)} value={to} id="draft-to" name="to"/>
                 <label htmlFor="draft-subject">Subject </label>
-                <input type="text" onChange={(ev) => editDraft(ev)} value={subject} id="draft-subject" name="subject"/>
+                <input type="text" onChange={(ev) => handleChange(ev)} value={subject} id="draft-subject" name="subject"/>
                 <label htmlFor="draft-body">Body </label>
-                <input type="text" onChange={(ev) => editDraft(ev)} value={body} id="draft-body" name="body"/>
+                <input type="text" onChange={(ev) => handleChange(ev)} value={body} id="draft-body" name="body"/>
             </section>
             <section className="footer-draft">
-                <button className="submit" type="submit" onClick={submitDraft}>Submit</button> 
+                <button className="submit" type="submit">Submit</button> 
                 <button className="delete" type="button" onClick={onDeleteDraft}>
                     <img src={imgTrash} alt="Trash" />
                 </button>

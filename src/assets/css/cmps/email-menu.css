@@ -1,16 +1,18 @@
 .email-menu {
     display: grid;
-    grid-template-columns: auto;
+    grid-template-columns: 1fr;
     gap: 3px;
 }
 
 .email-menu > * {
     height: 30px;
     font-size: medium;
+    background-color: ghostwhite;
 }
 
 .email-menu > *:hover:not(.selected){
     filter: brightness(90%);
+    text-decoration: none;
 }
 
 .email-menu .selected {

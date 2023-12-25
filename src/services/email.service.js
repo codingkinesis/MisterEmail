@@ -8,7 +8,8 @@ export const emailService = {
     getById,
     createEmail,
     getDefaultFilter,
-    getUser
+    checkEmailByFilter,
+    getUser,
 }
 
 const loggedinUser = {
@@ -22,12 +23,7 @@ _createEmails()
 async function query(filterBy) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
-        const { text, isRead, menuOption} = filterBy
-        emails = emails.filter(email =>{
-            return _checkEmailMenuOption(email, menuOption)
-            &&_doesEmailContainText(email, text)
-            && _checkEmailByIsRead(email, isRead)
-        })
+        emails = emails.filter(email => checkEmailByFilter(email, filterBy))
     }
     return emails
 }
@@ -48,16 +44,16 @@ function save(emailToSave) {
     }
 }
 
-function createEmail(subject, body, sentAt, from, to) {
+function createEmail() {
     return {
-        subject: subject,
-        body: body, 
+        subject: '',
+        body: '', 
         isRead: true,
         isStarred: false,
-        sentAt : sentAt,
+        sentAt : 0,
         removedAt : null, //for later use
-        from: from,
-        to: to
+        from: '',
+        to: ''
     }
 }
 
@@ -65,7 +61,7 @@ function getDefaultFilter() {
     return {
         text: '',
         isRead: 'all',
-        menuOption: 'inbox' // options: inbox, sent, draft
+        menu: 'inbox'
     }
 }
 
@@ -73,16 +69,24 @@ function getUser() {
     return loggedinUser
 }
 
-function _checkEmailMenuOption({ from, to }, menuOption) {
-    switch(menuOption) {
+function checkEmailByFilter(email, filterBy) {
+    const { text, isRead, menu} = filterBy
+    
+    return _checkEmailMenu(email, menu)
+        && _doesEmailContainText(email, text)
+        && _checkEmailByIsRead(email, isRead)
+}
+
+function _checkEmailMenu({ from, to }, menu) {
+    switch(menu) {
         case 'inbox':
             return to === loggedinUser.email
         case 'sent': 
             return from === loggedinUser.email
-        case 'draft': 
-            return from === null
+        case 'drafts': 
+            return from === ''
         default:
-            console.log('_checkEmailMenuOption: option not found')
+            console.log('_checkEmailMenu: option not found')
             return false
     }
 }

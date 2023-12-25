@@ -11,12 +11,8 @@
     height: 30px;
 }
 
-.email-preview .link:hover {
+.email-preview > *:hover {
     text-decoration: none;
-}
-
-.email-preview button:hover {
-    background: none;
 }
 
 .email-preview .head {

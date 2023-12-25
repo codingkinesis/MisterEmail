@@ -27,9 +27,9 @@ export function EmailFilter({ filterBy , onSetFilter}) {
                 />
             </label>
             <select className="dropdown" name="isRead" onChange={handleChange}>
+                <option value={'all'}>All</option>
                 <option value={'read'}>Read</option>
                 <option value={'unread'}>Unread</option>
-                <option value={'all'}>All</option>
             </select>
         </form>
     )

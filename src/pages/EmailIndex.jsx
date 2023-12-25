@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import { EmailList } from "../cmp/EmailList";
+import { Link, Outlet, useParams} from "react-router-dom";
 import { emailService } from "../services/email.service";
+import { EmailList } from "../cmp/EmailList";
 import { EmailFilter } from "../cmp/EmailFilter";
-import { EmailDraft } from "../cmp/EmailDraft";
 import { EmailMenu } from "../cmp/EmailMenu";
 import imgCompose from '../assets/imgs/writing.png';
 
 export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter())
-    const [draft, setDraft] = useState(null)
+
+    const params = useParams()
 
     useEffect(() => {
         loadEmails()
-    },[emails, filterBy, draft])
+    },[filterBy])
 
     async function loadEmails() {
         try{
@@ -25,6 +26,31 @@ export function EmailIndex() {
         }
     }
 
+    function onSetFilter(filterBy) {
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy}))
+    }
+
+    async function onAddEmail(email) {
+        try{
+            const savedEmail = await emailService.save(email)
+            if (emailService.checkEmailByFilter(savedEmail, filterBy))
+                setEmails(prevEmails => [...prevEmails, savedEmail])
+        } catch (err) {
+            console.error(err)
+        }
+        
+    }
+
+    async function onUpdateEmail(email) {
+        try{
+            const savedEmail = await emailService.save(email)
+            setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
+        } catch (err) {
+            console.error(err)
+        }
+        
+    }
+
     async function onDeleteEmail(emailId) {
         try {
             await emailService.remove(emailId)
@@ -34,86 +60,36 @@ export function EmailIndex() {
         }
     }
 
-    function onSetFilter(filterBy) {
-        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy}))
-    }
-
-    function composeEmail() {
-        if(!draft)
-            setDraft(emailService.createEmail('','',0,null,''))
-    }
-
-    function onEditDraft(draftEdit) {
-        setDraft(prevDraft => ({...prevDraft, ...draftEdit}))
-    }
-
-    async function onSaveAndCloseDraft(draftEdit) {
-        try{
-            await emailService.save(draftEdit)
-            setDraft(null)
-        } catch (err) {
-            alert('Failed to save draft.')
-            //console.error(err)
-        }
-        
-    }
-
-    function onSubmitDraft(draftEdit) {
-        try{
-            emailService.save({...draftEdit, from: emailService.getUser().email})
-            setDraft(null)
-        } catch (err) {
-            alert('Failed to submit draft.')
-            //console.error(err)
-        }
-    }
-
-    // add delete action
-    async function onDeleteDraft() {
-        try {
-            if(draft.id) {
-                await emailService.remove(draft.id)
-
-            }
-            setDraft(null)
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    function onOpenDraft(draft) {
-        setDraft(draft)
-    }
+    console.log(params)
 
     if(!emails) return <div>Loading...</div>
     const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead}
-    const filterByMenu = {menuOption: filterBy.menuOption}
+    const filterByMenu = {menu: filterBy.menu}
     return (
         <section className="email-index">
             <section className="layout">
-                <section className="filter">
-                    <EmailFilter filterBy={filterByFilter} onSetFilter={onSetFilter}/>
-                </section>
-                <button className="btn-compose" onClick={composeEmail}>
-                    <img src={imgCompose} />
-                    Compose
-                </button>
+                 <section className="filter">
+                    <EmailFilter filterBy={filterByFilter} onSetFilter={onSetFilter} />
+                </section> 
+                <Link to={`/email/${params.menu}/new`} >
+                    <button className="btn-compose" >
+                        <img src={imgCompose} />
+                        Compose
+                    </button>
+                </Link>
                 <section className="aside">
-                    <EmailMenu filterBy={filterByMenu} onSetFilter={onSetFilter}/>
+                    <EmailMenu filterBy={filterByMenu} onSetFilter={onSetFilter} />
                 </section>
                 <section className="main">
                     <EmailList 
                         emails={emails}
-                        onDelete={onDeleteEmail}
-                        onOpenDraft={onOpenDraft}/>
+                        onDelete={onDeleteEmail}/>
                 </section>
             </section>
-            {draft && <EmailDraft  
-                draft={draft}
-                onEditDraft={onEditDraft}
-                onSaveAndCloseDraft={onSaveAndCloseDraft}  
-                onSubmitDraft={onSubmitDraft}
-                onDeleteDraft={onDeleteDraft}/>}
+            {params.emailId && <Outlet context={{
+                onAddEmail,
+                onUpdateEmail, 
+                onDeleteEmail}}/>}
         </section>
     )
 }
