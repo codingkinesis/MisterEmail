@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useParams} from "react-router-dom";
+import { Link, Outlet, useParams, useSearchParams} from "react-router-dom";
 import { emailService } from "../services/email.service";
 import { EmailList } from "../cmp/EmailList";
 import { EmailFilter } from "../cmp/EmailFilter";
@@ -7,14 +7,22 @@ import { EmailMenu } from "../cmp/EmailMenu";
 import imgCompose from '../assets/imgs/writing.png';
 
 export function EmailIndex() {
-    const [emails, setEmails] = useState(null)
-    const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter())
-
     const params = useParams()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [emails, setEmails] = useState(null)
+    const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams))
 
     useEffect(() => {
+        updateSearchParams()
         loadEmails()
     },[filterBy])
+
+    function updateSearchParams() {
+        let searchFilter = {}
+        if (filterBy.text !== '') searchFilter.text = filterBy.text
+        if (filterBy.isRead !== 'all') searchFilter.isRead = filterBy.isRead
+        setSearchParams(searchFilter)
+    }
 
     async function loadEmails() {
         try{
@@ -59,8 +67,6 @@ export function EmailIndex() {
             console.error(err);
         }
     }
-
-    console.log(params)
 
     if(!emails) return <div>Loading...</div>
     const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead}

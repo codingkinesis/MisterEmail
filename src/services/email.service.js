@@ -8,6 +8,7 @@ export const emailService = {
     getById,
     createEmail,
     getDefaultFilter,
+    getFilterFromParams,
     checkEmailByFilter,
     getUser,
 }
@@ -63,6 +64,15 @@ function getDefaultFilter() {
         isRead: 'all',
         menu: 'inbox'
     }
+}
+
+function getFilterFromParams(params) {
+    const defaultFilter = getDefaultFilter()
+    let filterBy = {}
+    for(let field in defaultFilter) {
+        filterBy[field] = params.get(field) || defaultFilter[field]
+    }
+    return filterBy
 }
 
 function getUser() {
