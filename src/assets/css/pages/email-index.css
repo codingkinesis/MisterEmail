@@ -5,9 +5,10 @@
 .email-index .layout {
     display: grid;
     grid-template-columns: minmax(150px, 200px) minmax(400px, 1fr);
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-template-areas:
         "c f"
+        "a f"
         "a m";
     gap: 10px;
 }

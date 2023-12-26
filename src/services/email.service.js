@@ -25,6 +25,7 @@ async function query(filterBy) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
         emails = emails.filter(email => checkEmailByFilter(email, filterBy))
+        emails = _sortEmailsByFilter(emails, filterBy.sortBy)
     }
     return emails
 }
@@ -62,7 +63,8 @@ function getDefaultFilter() {
     return {
         text: '',
         isRead: 'all',
-        menu: 'inbox'
+        menu: 'inbox',
+        sortBy: 'date'
     }
 }
 
@@ -111,6 +113,22 @@ function _checkEmailByIsRead({ isRead }, isReadFilter) {
     if(isReadFilter === 'read' && isRead) return true
     if(isReadFilter === 'unread' && !isRead) return true
     return false
+}
+
+function _sortEmailsByFilter(emails, sortBy) {
+    console.log(sortBy)
+
+    let newEmailList = []
+    if(sortBy === 'subject') {
+        newEmailList = emails.sort((e1,e2) => (e1.subject).localeCompare(e2.subject))
+    }
+    if(sortBy === 'date') {
+        newEmailList = emails.sort((e1,e2) => e2.sentAt - e1.sentAt)
+    }
+
+    console.log(newEmailList)
+
+    return newEmailList
 }
 
 function _createEmails() {

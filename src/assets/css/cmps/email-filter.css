@@ -1,7 +1,8 @@
 .email-filter {
     display: grid;
-    align-items: center;
-    grid-template-columns: minmax(auto, 300px) auto 1fr;
+    align-content: center;
+    grid-template-columns: minmax(auto, 300px);
+    grid-template-rows: auto auto;
 }
 
 .email-filter .search-bar-container {

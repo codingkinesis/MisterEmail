@@ -22,6 +22,7 @@ export function EmailIndex() {
         let searchFilter = {}
         if (filterBy.text !== '') searchFilter.text = filterBy.text
         if (filterBy.isRead !== 'all') searchFilter.isRead = filterBy.isRead
+        if (filterBy.sortBy !== 'none') searchFilter.sortBy = filterBy.sortBy
         setSearchParams(searchFilter)
     }
 
@@ -75,7 +76,7 @@ export function EmailIndex() {
     }
 
     if(!emails) return <div>Loading...</div>
-    const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead}
+    const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead, sortBy: filterBy.sortBy}
     const filterByMenu = {menu: filterBy.menu}
     return (
         <section className="email-index">
