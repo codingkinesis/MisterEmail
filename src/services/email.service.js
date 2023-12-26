@@ -133,58 +133,100 @@ function _sortEmailsByFilter(emails, sortBy) {
 
 function _createEmails() {
     let emails = utilService.loadFromStorage(STORAGE_KEY)
-    if (true) {
-        const emails = [
-            {id: 'e101',
-            subject: 'Miss you!',
-            body: 'Would love to catch up sometimes.', 
-            isRead: false,
-            isStarred: false,
-            sentAt : 1591133930594,
-            removedAt : null, //for later use
-            from: 'momo@momo.com',
-            to: loggedinUser.email},
+    if (!emails || emails.length === 0) {
+        // const emails = [
+        //     {id: 'e101',
+        //     subject: 'Miss you!',
+        //     body: 'Would love to catch up sometimes.', 
+        //     isRead: false,
+        //     isStarred: false,
+        //     sentAt : 1591133930594,
+        //     removedAt : null, //for later use
+        //     from: 'momo@momo.com',
+        //     to: loggedinUser.email},
 
-            {id: 'e102',
-            subject: 'Hello again',
-            body: `We met last time, so now we're meating again.`,
-            isRead: false,
-            isStarred: false,
-            sentAt : 1564133930594,
-            removedAt : null, //for later use
-            from: 'gron@gron.com',
-            to: loggedinUser.email},
+        //     {id: 'e102',
+        //     subject: 'Hello again',
+        //     body: `We met last time, so now we're meating again.`,
+        //     isRead: false,
+        //     isStarred: false,
+        //     sentAt : 1564133930594,
+        //     removedAt : null, //for later use
+        //     from: 'gron@gron.com',
+        //     to: loggedinUser.email},
 
-            {id: 'e103',
-            subject: 'Please stop',
-            body: 'Would you please stop calling the cops every time my dog barks at you.', 
-            isRead: false,
-            isStarred: false,
-            sentAt : 1559135930594,
-            removedAt : null, //for later use
-            from: 'doggy@doggy.com',
-            to: loggedinUser.email},
+        //     {id: 'e103',
+        //     subject: 'Please stop',
+        //     body: 'Would you please stop calling the cops every time my dog barks at you.', 
+        //     isRead: false,
+        //     isStarred: false,
+        //     sentAt : 1559135930594,
+        //     removedAt : null, //for later use
+        //     from: 'doggy@doggy.com',
+        //     to: loggedinUser.email},
 
-            {id: 'e104',
-            subject: 'Thanks again $$',
-            body: `I'll send you the cash once the police stop looking for the body. Where did you end up hiding it.`,
-            isRead: false,
-            isStarred: false,
-            sentAt : 1551136208594,
-            removedAt : null, //for later use
-            from: 'ghj@ghj.com',
-            to: loggedinUser.email,},
+        //     {id: 'e104',
+        //     subject: 'Thanks again $$',
+        //     body: `I'll send you the cash once the police stop looking for the body. Where did you end up hiding it.`,
+        //     isRead: false,
+        //     isStarred: false,
+        //     sentAt : 1551136208594,
+        //     removedAt : null, //for later use
+        //     from: 'ghj@ghj.com',
+        //     to: loggedinUser.email,},
 
-            {id: 'e105',
-            subject: 'Great movie!',
-            body: `I really enjoyed the movie you advised me to watch.`,
-            isRead: true,
-            isStarred: false,
-            sentAt : 1565136208594,
-            removedAt : null, //for later use
-            from: loggedinUser.email,
-            to: 'jojo@jojo',}
-        ]
+        //     {id: 'e105',
+        //     subject: 'Great movie!',
+        //     body: `I really enjoyed the movie you advised me to watch.`,
+        //     isRead: true,
+        //     isStarred: false,
+        //     sentAt : 1565136208594,
+        //     removedAt : null, //for later use
+        //     from: loggedinUser.email,
+        //     to: 'jojo@jojo',}
+        // ]
+
+        
+        let emails = []
+        // inbox
+        for(let i = 0; i < 20; i++) {
+            let email = _createRandomEmail()
+            email.to = loggedinUser.email
+            email.key = email.id
+            if(i<10) email.isRead = true
+            emails.push(email)
+        }
+        // sent
+        for(let i = 0; i < 10; i++) {
+            let email = _createRandomEmail()
+            email.from = loggedinUser.email
+            email.isRead = true
+            email.key = email.id
+            emails.push(email)
+        }
+        // drafts
+        for(let i = 0; i < 10; i++) {
+            let email = _createRandomEmail()
+            email.from = ''
+            email.isRead = true
+            email.key = email.id
+            emails.push(email)
+        }
+        console.log(emails)
         utilService.saveToStorage(STORAGE_KEY, emails)
+    }
+}
+
+function _createRandomEmail() {
+    return {
+        id: utilService.makeId(),
+        subject: utilService.makerRandomWords(4),
+        body: utilService.makerRandomWords(20), 
+        isRead: false,
+        isStarred: false,
+        sentAt : Math.floor(Math.random() * (1701133930594 - 1501133930594) + 1401133930594),
+        removedAt : null, //for later use
+        from: `${utilService.makerRandomWords(1)}@${utilService.makerRandomWords(1)}`,
+        to: `${utilService.makerRandomWords(1)}@${utilService.makerRandomWords(1)}`,
     }
 }
