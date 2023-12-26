@@ -5,6 +5,7 @@ import { EmailList } from "../cmp/EmailList";
 import { EmailFilter } from "../cmp/EmailFilter";
 import { EmailMenu } from "../cmp/EmailMenu";
 import imgCompose from '../assets/imgs/writing.png';
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service";
 
 export function EmailIndex() {
     const params = useParams()
@@ -43,8 +44,10 @@ export function EmailIndex() {
             const savedEmail = await emailService.save(email)
             if (emailService.checkEmailByFilter(savedEmail, filterBy))
                 setEmails(prevEmails => [...prevEmails, savedEmail])
+            showSuccessMsg('Successfully added email')
         } catch (err) {
             console.error(err)
+            showErrorMsg('Failed to add email')
         }
         
     }
@@ -63,7 +66,10 @@ export function EmailIndex() {
         try {
             await emailService.remove(emailId)
             setEmails(prevEmails => prevEmails.filter(email => email.id !== emailId))
+            console.log('here')
+            showSuccessMsg('Successfully deleted email')
         } catch (err) {
+            showErrorMsg('Failed to delete email')
             console.error(err);
         }
     }

@@ -4,7 +4,7 @@ import { EmailIndex } from './pages/EmailIndex'
 import { AppHeader } from './cmp/AppHeader'
 import { EmailDetails } from './pages/EmailDetails'
 import { EmailDraft } from './cmp/EmailDraft'
-import { EmailMenu } from './cmp/EmailMenu'
+import { UserMsg } from './cmp/userMsg'
 
 export function App() {
 
@@ -12,7 +12,6 @@ export function App() {
         <Router>
             <section className='main-app'>
                 <AppHeader />
-
                 <main>
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -28,6 +27,7 @@ export function App() {
                         Mails 2023 &copy;
                     </section>
                 </footer>
+                <UserMsg />
             </section>
         </Router>
 
