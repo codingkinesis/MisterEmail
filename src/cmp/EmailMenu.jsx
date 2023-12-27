@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-export function EmailMenu({ filterBy , onSetFilter}) {
+export function EmailMenu({ filterBy , onSetFilter, unreadEmailNum}) {
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
     const navigate = useNavigate()
     const { emailId } = useParams()
@@ -25,7 +25,10 @@ export function EmailMenu({ filterBy , onSetFilter}) {
     menu === 'drafts' ? drafts = 'selected' : drafts = ''
     return (
         <section className="email-menu">
-            <button className={inbox} onClick={() => handleMenuChange('inbox')}>Inbox</button>
+            <button className={inbox} onClick={() => handleMenuChange('inbox')}>
+                <p>Inbox</p>
+                {unreadEmailNum >= 0 && unreadEmailNum}
+            </button>
             <button className={sent} onClick={() => handleMenuChange('sent')}>Sent</button>
             <button className={drafts} onClick={() => handleMenuChange('drafts')}>Drafts</button>
         </section>

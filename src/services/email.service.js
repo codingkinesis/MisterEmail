@@ -11,6 +11,7 @@ export const emailService = {
     getFilterFromParams,
     checkEmailByFilter,
     getUser,
+    getUnreadEmailNum,
 }
 
 const loggedinUser = {
@@ -28,6 +29,14 @@ async function query(filterBy) {
         emails = _sortEmailsByFilter(emails, filterBy.sortBy)
     }
     return emails
+}
+
+
+async function getUnreadEmailNum() {
+    const emails = await storageService.query(STORAGE_KEY)
+    let unreadEmails 
+    unreadEmails = emails.filter(email => !email.isRead)
+    return unreadEmails.length
 }
 
 function getById(id) {
@@ -82,7 +91,7 @@ function getUser() {
 }
 
 function checkEmailByFilter(email, filterBy) {
-    const { text, isRead, menu} = filterBy
+    const { text, isRead, menu } = filterBy
     
     return _checkEmailMenu(email, menu)
         && _doesEmailContainText(email, text)
@@ -116,8 +125,6 @@ function _checkEmailByIsRead({ isRead }, isReadFilter) {
 }
 
 function _sortEmailsByFilter(emails, sortBy) {
-    console.log(sortBy)
-
     let newEmailList = []
     if(sortBy === 'subject') {
         newEmailList = emails.sort((e1,e2) => (e1.subject).localeCompare(e2.subject))
@@ -125,8 +132,6 @@ function _sortEmailsByFilter(emails, sortBy) {
     if(sortBy === 'date') {
         newEmailList = emails.sort((e1,e2) => e2.sentAt - e1.sentAt)
     }
-
-    console.log(newEmailList)
 
     return newEmailList
 }
@@ -212,7 +217,6 @@ function _createEmails() {
             email.key = email.id
             emails.push(email)
         }
-        console.log(emails)
         utilService.saveToStorage(STORAGE_KEY, emails)
     }
 }

@@ -26,3 +26,9 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
 }
+
+.email-menu > *:nth-child(1) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}

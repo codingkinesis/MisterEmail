@@ -11,7 +11,12 @@ export function EmailIndex() {
     const params = useParams()
     const [searchParams, setSearchParams] = useSearchParams()
     const [emails, setEmails] = useState(null)
+    const [unreadEmailNum, setUnreadEmailNum] = useState(0)
     const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams))
+
+    useEffect(() => {
+        loadUnreadEmailNum()
+    },[])
 
     useEffect(() => {
         updateSearchParams()
@@ -36,8 +41,22 @@ export function EmailIndex() {
         }
     }
 
+    async function loadUnreadEmailNum() {
+        try{
+            const unreadEmails = await emailService.getUnreadEmailNum()
+            setUnreadEmailNum(unreadEmails)
+        } catch(err) {
+            showErrorMsg('Failed to load unread emails')
+            console.error(err)
+        }
+    }
+
     function onSetFilter(filterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy}))
+    }
+
+    function onChangeUnreadEmailNum(num) {
+        setUnreadEmailNum(prevUnreadEmailNum => prevUnreadEmailNum + num)
     }
 
     async function onAddEmail(email) {
@@ -67,7 +86,6 @@ export function EmailIndex() {
         try {
             await emailService.remove(emailId)
             setEmails(prevEmails => prevEmails.filter(email => email.id !== emailId))
-            console.log('here')
             showSuccessMsg('Successfully deleted email')
         } catch (err) {
             showErrorMsg('Failed to delete email')
@@ -91,18 +109,25 @@ export function EmailIndex() {
                     </button>
                 </Link>
                 <section className="aside">
-                    <EmailMenu filterBy={filterByMenu} onSetFilter={onSetFilter} />
+                    <EmailMenu 
+                        filterBy={filterByMenu} 
+                        onSetFilter={onSetFilter} 
+                        unreadEmailNum={unreadEmailNum}
+                    />
                 </section>
                 <section className="main">
                     <EmailList 
                         emails={emails}
-                        onDelete={onDeleteEmail}/>
+                        onDelete={onDeleteEmail}
+                        onChangeUnreadEmailNum={onChangeUnreadEmailNum}
+                    />
                 </section>
             </section>
             {params.emailId && <Outlet context={{
                 onAddEmail,
                 onUpdateEmail, 
-                onDeleteEmail}}/>}
+                onDeleteEmail}}
+            />}
         </section>
     )
 }

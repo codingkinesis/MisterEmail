@@ -1,7 +1,7 @@
 import { EmailPreview } from "./EmailPreview";
 import imgTrash from '../assets/imgs/trash.png'
 
-export function EmailList({emails, onDelete}) {
+export function EmailList({emails, onDelete, onChangeUnreadEmailNum }) {
 
     function getDate(dateTime) {
         const date = new Date(dateTime)
@@ -15,6 +15,11 @@ export function EmailList({emails, onDelete}) {
         return (num > 9) ? num + '' : '0' + num
     }
 
+    function onTrash({ isRead, id }) {
+        if (!isRead) onChangeUnreadEmailNum(-1)
+        onDelete(id)
+    }
+
     return (
         <section className="email-list">
             <ul>
@@ -25,7 +30,7 @@ export function EmailList({emails, onDelete}) {
                             {getDate(email.sentAt)}
                         </div>
                         <div className="hover-display">
-                            <button onClick={() => onDelete(email.id)}>
+                            <button onClick={() => onTrash(email)}>
                                 <img src={imgTrash} alt="Trash" />
                             </button>
                         </div>
