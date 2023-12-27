@@ -1,23 +1,38 @@
 .email-filter {
     display: grid;
     align-content: center;
-    grid-template-columns: minmax(auto, 300px);
+    grid-template-columns: minmax(auto, 350px);
     grid-template-rows: auto auto;
 }
 
 .email-filter .search-bar-container {
     background-color: white;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     border: none;
     border-radius: 20px;
     padding: 6px;
     align-items: center;
 }
 
-.email-filter .search-bar-container img {
+.email-filter .search-bar-container button {
+    background-color: white;
+    border: none;
+    border-radius: 999px;
+}
+
+.email-filter .search-bar-container button:hover {
+    filter: brightness(90%);
+}
+
+.email-filter .search-bar-container .search {
     margin: 3px;
     height: 20px;
+}
+
+.email-filter .search-bar-container .filter {
+    margin: 3px;
+    height: 27px;
 }
 
 .email-filter .search-bar {
@@ -31,3 +46,4 @@
 .email-filter .search-bar:focus {
     outline: none;
 }
+
