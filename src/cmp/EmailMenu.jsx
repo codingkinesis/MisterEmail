@@ -19,8 +19,9 @@ export function EmailMenu({ filterBy , onSetFilter, unreadEmailNum}) {
     }
 
     const { menu } = filterByToEdit
-    let inbox, sent, drafts
+    let inbox, sent, drafts, starred
     menu === 'inbox' ? inbox = 'selected' : inbox = ''
+    menu === 'starred' ? starred = 'selected' : starred = ''
     menu === 'sent' ? sent = 'selected' : sent = ''
     menu === 'drafts' ? drafts = 'selected' : drafts = ''
     return (
@@ -29,6 +30,7 @@ export function EmailMenu({ filterBy , onSetFilter, unreadEmailNum}) {
                 <p>Inbox</p>
                 {unreadEmailNum >= 0 && unreadEmailNum}
             </button>
+            <button className={starred} onClick={() => handleMenuChange('starred')}>Starred</button>
             <button className={sent} onClick={() => handleMenuChange('sent')}>Sent</button>
             <button className={drafts} onClick={() => handleMenuChange('drafts')}>Drafts</button>
         </section>

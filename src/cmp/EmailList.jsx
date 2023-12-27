@@ -1,7 +1,9 @@
 import { EmailPreview } from "./EmailPreview";
 import imgTrash from '../assets/imgs/trash.png'
+import imgStarred from '../assets/imgs/starred.png'
+import imgUnstarred from '../assets/imgs/unstarred.png'
 
-export function EmailList({emails, onDelete, onChangeUnreadEmailNum }) {
+export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleStarred}) {
 
     function getDate(dateTime) {
         const date = new Date(dateTime)
@@ -25,7 +27,16 @@ export function EmailList({emails, onDelete, onChangeUnreadEmailNum }) {
             <ul>
                 {emails.map(email =>
                     <li key={email.id}>
-                        <EmailPreview email={email} />
+                        <button className="starred" onClick={() => onToggleStarred(email)}>
+                            {email.isStarred 
+                            ? 
+                            <img src={imgStarred} alt="starred" /> 
+                            : 
+                            <img src={imgUnstarred} alt="unstarred" />}
+                        </button>
+                        <section className="email-info">
+                            <EmailPreview email={email} />
+                        </section>
                         <div className="not-hover-display">
                             {getDate(email.sentAt)}
                         </div>

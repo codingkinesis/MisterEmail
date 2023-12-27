@@ -93,6 +93,17 @@ export function EmailIndex() {
         }
     }
 
+    async function onToggleStarred(email) {
+        try{
+            email.isStarred = !email.isStarred
+            const savedEmail = await emailService.save(email)
+            if(filterBy.menu === 'starred') loadEmails()
+            else setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     if(!emails) return <div>Loading...</div>
     const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead, sortBy: filterBy.sortBy}
     const filterByMenu = {menu: filterBy.menu}
@@ -120,6 +131,7 @@ export function EmailIndex() {
                         emails={emails}
                         onDelete={onDeleteEmail}
                         onChangeUnreadEmailNum={onChangeUnreadEmailNum}
+                        onToggleStarred={onToggleStarred}
                     />
                 </section>
             </section>

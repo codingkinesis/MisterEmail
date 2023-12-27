@@ -98,10 +98,12 @@ function checkEmailByFilter(email, filterBy) {
         && _checkEmailByIsRead(email, isRead)
 }
 
-function _checkEmailMenu({ from, to }, menu) {
+function _checkEmailMenu({ from, to ,isStarred}, menu) {
     switch(menu) {
         case 'inbox':
             return to === loggedinUser.email
+        case 'starred': 
+            return isStarred
         case 'sent': 
             return from === loggedinUser.email
         case 'drafts': 

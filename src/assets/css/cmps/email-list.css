@@ -17,7 +17,7 @@
   border-radius: 5px;
   margin-top: 2px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr auto;
 }
 
 .email-list li:hover {
@@ -59,15 +59,20 @@
 @media only screen and (max-width: 600px) {
 
   .email-list li {
-    grid-template: 1fr auto / auto auto;
+    display: grid;
+    grid-template-areas: 1fr auto auto / auto auto;
+    grid-template:
+      "e d d"
+      "e m s";
   }
 
-  .email-list li > *:nth-child(1){
-    grid-row: 1 / 3;
+  .email-list li .email-info{
+    grid-area: e;
   }
 
   .email-list li .not-hover-display { 
     text-align: right;
+    grid-area: d;
   }
   
   .email-list li:hover .not-hover-display {
@@ -77,10 +82,17 @@
   .email-list li .hover-display {
     display: flex;
     flex-direction: row-reverse;
+    grid-area: m;
   }
   
   .email-list li:hover .hover-display {
     display: flex;
     flex-direction: row-reverse;
   }
+
+  .email-list li .starred {
+    grid-area: s;
+  }
+
+
 }
