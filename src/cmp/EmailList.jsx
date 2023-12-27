@@ -2,8 +2,10 @@ import { EmailPreview } from "./EmailPreview";
 import imgTrash from '../assets/imgs/trash.png'
 import imgStarred from '../assets/imgs/starred.png'
 import imgUnstarred from '../assets/imgs/unstarred.png'
+import imgRead from '../assets/imgs/read.png'
+import imgUnread from '../assets/imgs/unread.png'
 
-export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleStarred}) {
+export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleStarred, onToggleRead}) {
 
     function getDate(dateTime) {
         const date = new Date(dateTime)
@@ -20,6 +22,13 @@ export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleSta
     function onTrash({ isRead, id }) {
         if (!isRead) onChangeUnreadEmailNum(-1)
         onDelete(id)
+    }
+
+    function onToggleIsRead(email) {
+        const isRead = email.isRead
+        onToggleRead(email)
+        if (!isRead) onChangeUnreadEmailNum(-1)
+        else onChangeUnreadEmailNum(1)
     }
 
     return (
@@ -45,6 +54,13 @@ export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleSta
                         <div className="hover-display">
                             <button onClick={() => onTrash(email)}>
                                 <img src={imgTrash} alt="Trash" />
+                            </button>
+                            <button onClick={() => onToggleIsRead(email)}>
+                                {!email.isRead 
+                                ? 
+                                <img src={imgRead} alt="read" /> 
+                                : 
+                                <img src={imgUnread} alt="unread" />}
                             </button>
                         </div>
                     </li>

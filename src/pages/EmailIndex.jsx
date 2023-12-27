@@ -104,6 +104,17 @@ export function EmailIndex() {
         }
     }
 
+    async function onToggleRead(email) {
+        try{
+            email.isRead = !email.isRead
+            const savedEmail = await emailService.save(email)
+            if(filterBy.isRead !== 'all') loadEmails()
+            else setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     if(!emails) return <div>Loading...</div>
     const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead, sortBy: filterBy.sortBy}
     const filterByMenu = {menu: filterBy.menu}
@@ -132,6 +143,7 @@ export function EmailIndex() {
                         onDelete={onDeleteEmail}
                         onChangeUnreadEmailNum={onChangeUnreadEmailNum}
                         onToggleStarred={onToggleStarred}
+                        onToggleRead={onToggleRead}
                     />
                 </section>
             </section>
