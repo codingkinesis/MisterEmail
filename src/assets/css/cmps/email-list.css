@@ -60,19 +60,16 @@
 
   .email-list li {
     display: grid;
-    grid-template-areas: 1fr auto auto / auto auto;
-    grid-template:
-      "e d d"
-      "e m s";
+    grid-template: auto auto / 1fr auto auto;
   }
 
   .email-list li .email-info{
-    grid-area: e;
+    grid-area: 1 / 1 / -1 / 2;
   }
 
   .email-list li .not-hover-display { 
     text-align: right;
-    grid-area: d;
+    grid-area: 1 / 2 / 2 / -1;
   }
   
   .email-list li:hover .not-hover-display {
@@ -82,7 +79,7 @@
   .email-list li .hover-display {
     display: flex;
     flex-direction: row-reverse;
-    grid-area: m;
+    grid-area: 2 / 2 / -1 / 3;
   }
   
   .email-list li:hover .hover-display {
@@ -91,7 +88,7 @@
   }
 
   .email-list li .starred {
-    grid-area: s;
+    grid-area: -2 / -2 / -1 / -1;
   }
 
 

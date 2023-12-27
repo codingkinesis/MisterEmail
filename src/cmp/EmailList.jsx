@@ -27,13 +27,15 @@ export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleSta
             <ul>
                 {emails.map(email =>
                     <li key={email.id}>
-                        <button className="starred" onClick={() => onToggleStarred(email)}>
-                            {email.isStarred 
-                            ? 
-                            <img src={imgStarred} alt="starred" /> 
-                            : 
-                            <img src={imgUnstarred} alt="unstarred" />}
-                        </button>
+                        <div className="starred">
+                            <button onClick={() => onToggleStarred(email)}>
+                                {email.isStarred 
+                                ? 
+                                <img src={imgStarred} alt="starred" /> 
+                                : 
+                                <img src={imgUnstarred} alt="unstarred" />}
+                            </button>
+                        </div>
                         <section className="email-info">
                             <EmailPreview email={email} />
                         </section>
