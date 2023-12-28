@@ -7,7 +7,7 @@
 .email-menu > * {
     height: 30px;
     font-size: medium;
-    background-color: ghostwhite;
+    background-color: var(--base-color);
 }
 
 .email-menu > *:hover:not(.selected){
@@ -21,7 +21,7 @@
 
 .email-menu button {
     border: none;
-    background-color: ghostwhite;
+    background-color: var(--base-color);
     text-align: left;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -31,4 +31,8 @@
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+    
 }

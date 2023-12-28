@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useParams, useSearchParams} from "react-router-dom";
 import { emailService } from "../services/email.service";
 import { EmailList } from "../cmp/EmailList";
@@ -6,6 +6,8 @@ import { EmailFilter } from "../cmp/EmailFilter";
 import { EmailMenu } from "../cmp/EmailMenu";
 import imgCompose from '../assets/imgs/writing.png';
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service";
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
 export function EmailIndex() {
     const params = useParams()
@@ -13,6 +15,7 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [unreadEmailNum, setUnreadEmailNum] = useState(0)
     const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams))
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     useEffect(() => {
         loadUnreadEmailNum()
@@ -121,7 +124,10 @@ export function EmailIndex() {
     return (
         <section className="email-index">
             <section className="layout">
-                 <section className="filter">
+                <section className="filter">
+                    <button className="btn-hamberger" onClick={() => setIsMenuOpen(prevIsMenuOpen => !prevIsMenuOpen)}>
+                        <MenuIcon />
+                    </button>
                     <EmailFilter filterBy={filterByFilter} onSetFilter={onSetFilter} />
                 </section> 
                 <Link to={`/email/${params.menu}/new`} >
@@ -130,7 +136,10 @@ export function EmailIndex() {
                         Compose
                     </button>
                 </Link>
-                <section className="aside">
+                <section className={`aside ${!isMenuOpen && 'hidden'}`}>
+                    <button className="btn-hamberger" onClick={() => setIsMenuOpen(prevIsMenuOpen => !prevIsMenuOpen)}>
+                        <MenuOpenIcon />
+                    </button>
                     <EmailMenu 
                         filterBy={filterByMenu} 
                         onSetFilter={onSetFilter} 
