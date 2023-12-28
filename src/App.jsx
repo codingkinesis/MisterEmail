@@ -21,12 +21,6 @@ export function App() {
                         <Route path="/email/:emailId" element={<EmailDetails />} />
                     </Routes>
                 </main>
-
-                <footer>
-                    <section className="container">
-                        Mails 2023 &copy;
-                    </section>
-                </footer>
                 <UserMsg />
             </section>
         </Router>
