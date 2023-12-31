@@ -24,18 +24,18 @@
   border-color:var(--email-border);
 }
 
-.email-list button {
+.email-list .btn {
   background-color: var(--email);
   border: 0;
   border-radius: 50%;
   height: 30px;
 }
 
-.email-list button:hover {
+.email-list .btn:hover {
   background-color: var(--trash-hover);
 }
 
-.email-list button img {
+.email-list .btn img {
   height: 20px;
 }
 

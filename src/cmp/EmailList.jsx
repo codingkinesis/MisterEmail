@@ -37,7 +37,7 @@ export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleSta
                 {emails.map(email =>
                     <li key={email.id}>
                         <div className="starred">
-                            <button onClick={() => onToggleStarred(email)}>
+                            <button className="btn" onClick={() => onToggleStarred(email)}>
                                 {email.isStarred 
                                 ? 
                                 <img src={imgStarred} alt="starred" /> 
@@ -46,16 +46,16 @@ export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleSta
                             </button>
                         </div>
                         <section className="email-info">
-                            <EmailPreview email={email} />
+                            <EmailPreview email={email} onOpenDraft={onOpenDraft}/>
                         </section>
                         <div className="not-hover-display">
                             {getDate(email.sentAt)}
                         </div>
                         <div className="hover-display">
-                            <button onClick={() => onTrash(email)}>
+                            <button className="btn" onClick={() => onTrash(email)}>
                                 <img src={imgTrash} alt="Trash" />
                             </button>
-                            <button onClick={() => onToggleIsRead(email)}>
+                            <button className="btn" onClick={() => onToggleIsRead(email)}>
                                 {!email.isRead 
                                 ? 
                                 <img src={imgRead} alt="read" /> 
