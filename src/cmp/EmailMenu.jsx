@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useEffectUpdate } from "../customHooks/useEffectUpdate"
 
 export function EmailMenu({ filterBy , onSetFilter, unreadEmailNum}) {
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
     const navigate = useNavigate()
     const { emailId } = useParams()
 
-    useEffect(() => {
+    useEffectUpdate(() => {
         onSetFilter(filterByToEdit)
     },[filterByToEdit])
 
     function handleMenuChange(menu) {
         setFilterByToEdit(prevFilter => ({...prevFilter, menu: menu}))
-            navigate(`/email/${menu}`)
+        navigate(`/email/${menu}`)
     }
 
     const { menu } = filterByToEdit

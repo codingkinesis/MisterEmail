@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react"
 import imgSearch from '../assets/imgs/search.png'
 import imgFilter from '../assets/imgs/filter.png'
+import { useEffectUpdate } from "../customHooks/useEffectUpdate"
+import { useForm } from "../customHooks/useForm"
 
-export function EmailFilter({ filterBy , onSetFilter}) {
-    const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
+export function EmailFilter({ filterBy, onSetFilter }) {
+    const [filterByToEdit, handleChange] = useForm(filterBy, onSetFilter)
     const [advanceFilter, setAdvanceFilter] = useState(null)
 
     function startAdvanceFilter() {
         setAdvanceFilter(1)
-    }
-    
-    
-    useEffect(() => {
-        onSetFilter(filterByToEdit)
-    },[filterByToEdit])
-
-    function handleChange(ev) {
-        const { name: feild, value } = ev.target
-        setFilterByToEdit(prevFilter => ({...prevFilter, [feild]: value}))
     }
 
     const { text, isRead, sortBy } = filterByToEdit
