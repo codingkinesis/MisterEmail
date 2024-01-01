@@ -3,20 +3,18 @@ import imgTrash from '../assets/imgs/trash.png'
 import { emailService } from '../services/email.service'
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
 
-export function EmailDraft() {
+export function EmailDraft({ draftId, updateDraftId, onAddEmail, onUpdateEmail, onDeleteEmail }) {
     const [draft , setDraft] = useState()
-    const { onAddEmail, onUpdateEmail, onDeleteEmail } = useOutletContext()
-    const navigate = useNavigate()
-    const { emailId, menu } = useParams()
+    
 
     useEffect(() => {
-        if(emailId === 'new') setDraft(emailService.createEmail())
-        else if (emailId) loadEmail()
-    },[emailId])
+        if(draftId === 'new') setDraft(emailService.createEmail())
+        else if (draftId) loadEmail()
+    },[draftId])
 
     async function loadEmail() {
         try {
-            const email = await emailService.getById(emailId)
+            const email = await emailService.getById(draftId)
             setDraft(email)
         } catch (error) {
             console.log(error)
@@ -30,17 +28,12 @@ export function EmailDraft() {
         
     function onDeleteDraft() {
         if (draft.id) onDeleteEmail(draft.id)
-        navigate(`/email/${menu}`)
+        updateDraftId(null)
     }
 
-    async function saveAndCloseDraft() {
-        try {
-            saveDraft(draft)
-            navigate(`/email/${menu}`)
-        } catch (error) {
-            console.log(error)
-            
-        }
+    function saveAndCloseDraft() {
+        saveDraft(draft)
+        updateDraftId(null)
     }
     
     function submitDraft(ev) {
@@ -48,7 +41,7 @@ export function EmailDraft() {
         if(isDraftReady()) {
             const user = emailService.getUser().email
             saveDraft({...draft, from: user})
-            navigate(`/email/${menu}`)
+            setDraftId(null)
         } else {
             alert('The email is not properly composed.')
         }

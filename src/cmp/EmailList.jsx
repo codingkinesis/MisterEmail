@@ -5,7 +5,7 @@ import imgUnstarred from '../assets/imgs/unstarred.png'
 import imgRead from '../assets/imgs/read.png'
 import imgUnread from '../assets/imgs/unread.png'
 
-export function EmailList({emails, onDelete, onChangeUnreadEmailNum, onToggleStarred, onToggleRead}) {
+export function EmailList({ emails, onOpenDraft, onDelete, onChangeUnreadEmailNum, onToggleStarred, onToggleRead }) {
 
     function getDate(dateTime) {
         const date = new Date(dateTime)

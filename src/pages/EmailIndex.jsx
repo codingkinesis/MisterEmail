@@ -8,6 +8,9 @@ import imgCompose from '../assets/imgs/writing.png';
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service";
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import { EmailDraft } from "../cmp/EmailDraft";
+import { Drafts } from "@mui/icons-material";
+import { useEffectUpdate } from "../customHooks/useEffectUpdate";
 
 export function EmailIndex() {
     const params = useParams()
@@ -15,22 +18,25 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [unreadEmailNum, setUnreadEmailNum] = useState(0)
     const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams))
+    const [draftId, setDraftId] = useState(searchParams.get('compose') || null)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     useEffect(() => {
         loadUnreadEmailNum()
+        setFilterBy(prevFilterBy => ({...prevFilterBy, menu: params.menu}))
     },[])
 
     useEffect(() => {
-        updateSearchParams()
+        updateSearchParams(draftId)
         loadEmails()
     },[filterBy])
 
-    function updateSearchParams() {
+    function updateSearchParams(draftId) {
         let searchFilter = {}
         if (filterBy.text !== '') searchFilter.text = filterBy.text
         if (filterBy.isRead !== 'all') searchFilter.isRead = filterBy.isRead
-        if (filterBy.sortBy !== 'none') searchFilter.sortBy = filterBy.sortBy
+        if (filterBy.sortBy !== 'date') searchFilter.sortBy = filterBy.sortBy
+        if (draftId !== null) searchFilter.compose = draftId
         setSearchParams(searchFilter)
     }
 
@@ -66,7 +72,10 @@ export function EmailIndex() {
         try{
             const savedEmail = await emailService.save(email)
             if (emailService.checkEmailByFilter(savedEmail, filterBy))
-                setEmails(prevEmails => [...prevEmails, savedEmail])
+                setEmails(prevEmails => {
+                    const emails = [...prevEmails, savedEmail]
+                    return emailService.sortEmailsByFilter(emails, filterBy.sortBy)
+                })    
             showSuccessMsg('Successfully added email')
         } catch (err) {
             console.error(err)
@@ -82,7 +91,6 @@ export function EmailIndex() {
         } catch (err) {
             console.error(err)
         }
-        
     }
 
     async function onDeleteEmail(emailId) {
@@ -118,6 +126,11 @@ export function EmailIndex() {
         }
     }
 
+    function updateDraftId(draftId) {
+        setDraftId(draftId)
+        updateSearchParams(draftId)
+    }
+
     if(!emails) return <div>Loading...</div>
     const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead, sortBy: filterBy.sortBy}
     const filterByMenu = {menu: filterBy.menu}
@@ -130,12 +143,10 @@ export function EmailIndex() {
                     </button>
                     <EmailFilter filterBy={filterByFilter} onSetFilter={onSetFilter} />
                 </section> 
-                <Link to={`/email/${params.menu}/new`} >
-                    <button className="btn-compose" >
-                        <img src={imgCompose} />
-                        Compose
-                    </button>
-                </Link>
+                <button className="btn-compose" onClick={() =>  updateDraftId('new')} >
+                    <img src={imgCompose} />
+                    Compose
+                </button>
                 <section className={`aside ${!isMenuOpen && 'hidden'}`}>
                     <button className="btn-hamberger" onClick={() => setIsMenuOpen(prevIsMenuOpen => !prevIsMenuOpen)}>
                         <MenuOpenIcon />
@@ -147,19 +158,27 @@ export function EmailIndex() {
                     />
                 </section>
                 <section className="main">
+                    {params.emailId 
+                    ?
+                    <Outlet />
+                    :
                     <EmailList 
                         emails={emails}
+                        onOpenDraft={updateDraftId}
                         onDelete={onDeleteEmail}
                         onChangeUnreadEmailNum={onChangeUnreadEmailNum}
                         onToggleStarred={onToggleStarred}
                         onToggleRead={onToggleRead}
                     />
+                    }
                 </section>
             </section>
-            {params.emailId && <Outlet context={{
-                onAddEmail,
-                onUpdateEmail, 
-                onDeleteEmail}}
+            {searchParams.get('compose') && <EmailDraft
+                draftId={draftId}
+                updateDraftId={updateDraftId}
+                onAddEmail={onAddEmail}
+                onUpdateEmail={onUpdateEmail}
+                onDeleteEmail={onDeleteEmail}
             />}
         </section>
     )

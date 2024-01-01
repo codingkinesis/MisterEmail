@@ -12,9 +12,6 @@ export function EmailMenu({ filterBy , onSetFilter, unreadEmailNum}) {
 
     function handleMenuChange(menu) {
         setFilterByToEdit(prevFilter => ({...prevFilter, menu: menu}))
-        if (emailId) 
-            navigate(`/email/${menu}/${emailId}`)
-        else
             navigate(`/email/${menu}`)
     }
 
