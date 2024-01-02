@@ -12,25 +12,21 @@ export function EmailMenu({ filterBy , onSetFilter, unreadEmailNum}) {
     },[filterByToEdit])
 
     function handleMenuChange(menu) {
+        console.log(menu)
         setFilterByToEdit(prevFilter => ({...prevFilter, menu: menu}))
         navigate(`/email/${menu}`)
     }
 
     const { menu } = filterByToEdit
-    let inbox, sent, drafts, starred
-    menu === 'inbox' ? inbox = 'selected' : inbox = ''
-    menu === 'starred' ? starred = 'selected' : starred = ''
-    menu === 'sent' ? sent = 'selected' : sent = ''
-    menu === 'drafts' ? drafts = 'selected' : drafts = ''
     return (
         <section className="email-menu">
-            <button className={inbox} onClick={() => handleMenuChange('inbox')}>
+            <button className={`${menu === 'inbox' && 'selected'}`} onClick={() => handleMenuChange('inbox')}>
                 <p>Inbox</p>
                 {unreadEmailNum >= 0 && unreadEmailNum}
             </button>
-            <button className={starred} onClick={() => handleMenuChange('starred')}>Starred</button>
-            <button className={sent} onClick={() => handleMenuChange('sent')}>Sent</button>
-            <button className={drafts} onClick={() => handleMenuChange('drafts')}>Drafts</button>
+            <button className={`${menu === 'starred' && 'selected'}`} onClick={() => handleMenuChange('starred')}>Starred</button>
+            <button className={`${menu === 'sent' && 'selected'}`} onClick={() => handleMenuChange('sent')}>Sent</button>
+            <button className={`${menu === 'drafts' && 'selected'}`} onClick={() => handleMenuChange('drafts')}>Drafts</button>
         </section>
     )
 }
