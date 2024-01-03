@@ -12,7 +12,6 @@ export function EmailMenu({ filterBy , onSetFilter, unreadEmailNum}) {
     },[filterByToEdit])
 
     function handleMenuChange(menu) {
-        console.log(menu)
         setFilterByToEdit(prevFilter => ({...prevFilter, menu: menu}))
         navigate(`/email/${menu}`)
     }

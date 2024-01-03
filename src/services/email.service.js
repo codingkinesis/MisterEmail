@@ -10,9 +10,9 @@ export const emailService = {
     getDefaultFilter,
     getFilterFromParams,
     checkEmailByFilter,
+    sortEmailsByFilter,
     getUser,
     getUnreadEmailNum,
-    sortEmailsByFilter,
 }
 
 const loggedinUser = {
@@ -24,12 +24,7 @@ const STORAGE_KEY = 'emails'
 _createEmails()
 
 async function query(filterBy) {
-    let emails = await storageService.query(STORAGE_KEY)
-    if (filterBy) {
-        emails = emails.filter(email => checkEmailByFilter(email, filterBy))
-        emails = sortEmailsByFilter(emails, filterBy.sortBy)
-    }
-    return emails
+    return storageService.query(STORAGE_KEY)
 }
 
 
@@ -127,7 +122,7 @@ function _checkEmailByIsRead({ isRead }, isReadFilter) {
     return false
 }
 
-function sortEmailsByFilter(emails, sortBy) {
+function sortEmailsByFilter(emails, { sortBy }) {
     let newEmailList = []
     if(sortBy === 'subject') {
         newEmailList = emails.sort((e1,e2) => (e1.subject).localeCompare(e2.subject))

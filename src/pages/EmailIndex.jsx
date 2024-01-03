@@ -16,20 +16,31 @@ export function EmailIndex() {
     const params = useParams()
     const [searchParams, setSearchParams] = useSearchParams()
     const [emails, setEmails] = useState(null)
+    const displayedEmails = useRef(null)
     const [unreadEmailNum, setUnreadEmailNum] = useState(0)
-    const [filterBy, setFilterBy] = useState(emailService.getFilterFromParams(searchParams))
+    const [filterBy, setFilterBy] = useState({...emailService.getFilterFromParams(searchParams), menu: params.menu})
     const [draftId, setDraftId] = useState(searchParams.get('compose') || null)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     useEffect(() => {
         loadUnreadEmailNum()
-        setFilterBy(prevFilterBy => ({...prevFilterBy, menu: params.menu}))
+        loadAllEmails()
     },[])
 
-    useEffect(() => {
+    useEffectUpdate(() => {
         updateSearchParams(draftId)
-        loadEmails()
-    },[filterBy])
+        loadDisplayedEmails()
+    },[filterBy, emails])
+
+    async function loadAllEmails() {
+        try{
+            const emails = await emailService.query(filterBy)
+            setEmails(emails)
+        } catch(err) {
+            showErrorMsg('Failed to load emails')
+            console.error(err)
+        }
+    }
 
     function updateSearchParams(draftId) {
         let searchFilter = {}
@@ -38,16 +49,6 @@ export function EmailIndex() {
         if (filterBy.sortBy !== 'date') searchFilter.sortBy = filterBy.sortBy
         if (draftId !== null) searchFilter.compose = draftId
         setSearchParams(searchFilter)
-    }
-
-    async function loadEmails() {
-        try{
-            const emails = await emailService.query(filterBy)
-            setEmails(emails)
-        } catch(err) {
-            showErrorMsg('Failed to load emails')
-            console.error(err)
-        }
     }
 
     async function loadUnreadEmailNum() {
@@ -60,22 +61,24 @@ export function EmailIndex() {
         }
     }
 
-    function onSetFilter(filterBy) {
-        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy}))
+    function loadDisplayedEmails() {
+        let emailsForDisplay = emails.filter(email => emailService.checkEmailByFilter(email, filterBy))
+        emailsForDisplay = emailService.sortEmailsByFilter(emailsForDisplay, filterBy)
+        displayedEmails.current = emailsForDisplay
     }
 
     function onChangeUnreadEmailNum(num) {
         setUnreadEmailNum(prevUnreadEmailNum => prevUnreadEmailNum + num)
     }
 
+    function onSetFilter(filterBy) {
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy}))
+    }
+
     async function onAddEmail(email) {
         try{
             const savedEmail = await emailService.save(email)
-            if (emailService.checkEmailByFilter(savedEmail, filterBy))
-                setEmails(prevEmails => {
-                    const emails = [...prevEmails, savedEmail]
-                    return emailService.sortEmailsByFilter(emails, filterBy.sortBy)
-                })    
+            setEmails(prevEmail => [...prevEmails, savedEmail])  
             showSuccessMsg('Successfully added email')
         } catch (err) {
             console.error(err)
@@ -89,6 +92,7 @@ export function EmailIndex() {
             const savedEmail = await emailService.save(email)
             setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
         } catch (err) {
+            showErrorMsg('Failed to update email')
             console.error(err)
         }
     }
@@ -108,8 +112,7 @@ export function EmailIndex() {
         try{
             email.isStarred = !email.isStarred
             const savedEmail = await emailService.save(email)
-            if(filterBy.menu === 'starred') loadEmails()
-            else setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
+            setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
         } catch (err) {
             console.error(err)
         }
@@ -119,8 +122,7 @@ export function EmailIndex() {
         try{
             email.isRead = !email.isRead
             const savedEmail = await emailService.save(email)
-            if(filterBy.isRead !== 'all') loadEmails()
-            else setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
+            setEmails(prevEmails => prevEmails.map(prevEmail => prevEmail.id === savedEmail.id ? savedEmail : prevEmail))
         } catch (err) {
             console.error(err)
         }
@@ -131,7 +133,7 @@ export function EmailIndex() {
         updateSearchParams(draftId)
     }
 
-    if(!emails) return <div>Loading...</div>
+    if(!displayedEmails.current) return <div>Loading...</div>
     const filterByFilter = {text: filterBy.text, isRead: filterBy.isRead, sortBy: filterBy.sortBy}
     const filterByMenu = {menu: filterBy.menu}
     return (
@@ -163,7 +165,7 @@ export function EmailIndex() {
                     <Outlet />
                     :
                     <EmailList 
-                        emails={emails}
+                        emails={displayedEmails.current}
                         onOpenDraft={updateDraftId}
                         onDelete={onDeleteEmail}
                         onChangeUnreadEmailNum={onChangeUnreadEmailNum}
