@@ -9,7 +9,6 @@ import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service";
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { EmailDraft } from "../cmp/EmailDraft";
-import { Drafts } from "@mui/icons-material";
 import { useEffectUpdate } from "../customHooks/useEffectUpdate";
 
 export function EmailIndex() {

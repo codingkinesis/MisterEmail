@@ -1,9 +1,12 @@
 import { EmailPreview } from "./EmailPreview";
-import imgTrash from '../assets/imgs/trash.png'
 import imgStarred from '../assets/imgs/starred.png'
 import imgUnstarred from '../assets/imgs/unstarred.png'
-import imgRead from '../assets/imgs/read.png'
-import imgUnread from '../assets/imgs/unread.png'
+import EmailReadIcon from '@mui/icons-material/DraftsOutlined';
+import EmailUnreadIcon from '@mui/icons-material/MarkEmailUnreadOutlined';
+import TrashIcon from '@mui/icons-material/DeleteOutlined';
+import UnstarredIcon from '@mui/icons-material/StarBorderOutlined';
+import StarredIcon from '@mui/icons-material/StarOutlined';
+import { yellow } from "@mui/material/colors";
 
 export function EmailList({ emails, onOpenDraft, onDelete, onChangeUnreadEmailNum, onToggleStarred, onToggleRead }) {
 
@@ -40,9 +43,9 @@ export function EmailList({ emails, onOpenDraft, onDelete, onChangeUnreadEmailNu
                             <button className="btn" onClick={() => onToggleStarred(email)}>
                                 {email.isStarred 
                                 ? 
-                                <img src={imgStarred} alt="starred" /> 
+                                <StarredIcon color="primary" sx={{ color: yellow[500] }} /> 
                                 : 
-                                <img src={imgUnstarred} alt="unstarred" />}
+                                <UnstarredIcon />}
                             </button>
                         </div>
                         <section className="email-info">
@@ -53,14 +56,14 @@ export function EmailList({ emails, onOpenDraft, onDelete, onChangeUnreadEmailNu
                         </div>
                         <div className="hover-display">
                             <button className="btn" onClick={() => onTrash(email)}>
-                                <img src={imgTrash} alt="Trash" />
+                                <TrashIcon />
                             </button>
                             <button className="btn" onClick={() => onToggleIsRead(email)}>
                                 {!email.isRead 
                                 ? 
-                                <img src={imgRead} alt="read" /> 
+                                <EmailReadIcon />
                                 : 
-                                <img src={imgUnread} alt="unread" />}
+                                <EmailUnreadIcon />}
                             </button>
                         </div>
                     </li>
