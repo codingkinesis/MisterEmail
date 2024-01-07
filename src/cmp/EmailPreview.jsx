@@ -6,7 +6,7 @@ export function EmailPreview({ email, onOpenDraft }) {
     const { id, from, isRead, subject, body } = email
     return (
         <section className="email-preview">
-            { from && <Link to={`/email/${menu}/${id}`}>
+            { from && <Link to={`/${menu}/${id}`}>
                 <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{from}</p>
                 <p className={`head ${!isRead && 'bold'} hide-extra-text`}>{subject}</p>
                 <p className="body hide-extra-text">{body}</p>

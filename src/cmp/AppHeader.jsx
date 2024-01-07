@@ -10,8 +10,7 @@ export function AppHeader() {
                     Mister Email
             </div>
             <nav>
-                <NavLink to="/">Home</NavLink>
-                <NavLink to="/email/inbox">Email</NavLink>
+                <NavLink to="/inbox">Email</NavLink>
             </nav> 
         </section>
     </header>
