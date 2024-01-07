@@ -1,0 +1,60 @@
+.email-filter {
+    display: grid;
+    align-content: center;
+    grid-template-columns: minmax(auto, 350px);
+    grid-template-rows: auto auto;
+
+    & .search-bar-container {
+        background-color: $fill-in-color;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        border: none;
+        border-radius: 20px;
+        padding: 6px;
+        align-items: center;
+
+        & button {
+            background-color: $fill-in-color;
+            border: none;
+            border-radius: 999px;
+
+            & :hover {
+                @include btnHover($fill-in-color);
+            }
+        }
+
+        & .search {
+            margin: 3px;
+            height: rem(20px);
+        }
+
+        & .filter {
+            margin: 3px;
+            height: rem(27px);
+        }
+    }
+
+    & .search-bar {
+        background-color: $fill-in-color;
+        border: none;
+        border-radius: 2px;
+        padding: 6px;
+        font-size: large;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .email-filter .search-bar-container {
+        grid-template-columns: 1fr auto;
+
+        & .search {
+            display: none;
+        }
+    }
+
+}

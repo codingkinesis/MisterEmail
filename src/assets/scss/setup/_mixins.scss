@@ -1,0 +1,3 @@
+@mixin btnHover($color) {
+    background-color: desaturate(darken($color, 20%), 80%);
+}

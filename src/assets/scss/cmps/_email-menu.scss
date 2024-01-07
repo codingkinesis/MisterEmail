@@ -1,0 +1,30 @@
+.email-menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3px;
+
+    & > * {
+        height: 30px;
+        font-size: medium;
+        background-color: $primary-color;
+        border: none;
+        text-align: left;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+
+        &:hover:not(.selected) {
+            @include btnHover($primary-color);
+            text-decoration: none;
+        }
+
+        &:nth-child(1) {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+        }
+
+        &.selected {
+            background-color: $selected-menu-color;
+        }
+    } 
+}

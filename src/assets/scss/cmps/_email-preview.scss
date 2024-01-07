@@ -1,0 +1,54 @@
+.email-preview {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    & > * {
+        display: grid;
+        grid-template-columns: 20% 20% 1fr auto;
+        background-color: $fill-in-color;
+        border: 0;
+        align-items: center;
+        text-align: left;
+        font-size: medium;
+        height: 30px;
+
+        &:hover {
+            text-decoration: none;
+            border-radius: 0;
+        }
+    }
+
+    & .head {
+        color: $subject-txt-color;
+    }
+
+    & .draft {
+        color: $draft-txt-color;
+    }
+
+    & .body {
+        color: $body-txt-color;
+    }
+
+    & .bold {
+        font-weight: 550;
+    }
+
+    & .hide-extra-text {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .email-preview > *{
+        display: grid;
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+}

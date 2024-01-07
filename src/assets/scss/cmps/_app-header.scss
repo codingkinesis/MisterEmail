@@ -1,0 +1,33 @@
+.app-header {
+    background-color:cornflowerblue;
+    color: white;
+
+    & .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        & > section {
+            flex-grow: 1;
+        }
+    }
+
+    & .logo {
+        flex-grow: 1;
+        font-weight: 600;
+        height: 50px;
+        margin: -5px;
+        display: grid;
+        grid-template-columns: 50px auto;
+        align-items: center;
+
+        & img{
+            height: 50px;
+        }
+    }
+
+    & nav a:not(:last-child) {
+        margin-right: 10px;
+    }
+
+}
