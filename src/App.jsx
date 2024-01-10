@@ -12,6 +12,7 @@ export function App() {
                 <AppHeader />
                 <main>
                     <Routes>
+                        <Route path="/" element={<Navigate to="/inbox" replace={true} />} />
                         <Route path="/:menu" element={<EmailIndex />} >
                                 <Route path="/:menu/:emailId?" element={<EmailDetails />} />
                         </Route>
