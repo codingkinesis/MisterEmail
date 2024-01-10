@@ -41,7 +41,7 @@ export function EmailDraft({ draftId, updateDraftId, onAddEmail, onUpdateEmail, 
         if(isDraftReady()) {
             const user = emailService.getUser().email
             saveDraft({...draft, from: user})
-            setDraftId(null)
+            updateDraftId(null)
         } else {
             alert('The email is not properly composed.')
         }

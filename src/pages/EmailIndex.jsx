@@ -77,7 +77,7 @@ export function EmailIndex() {
     async function onAddEmail(email) {
         try{
             const savedEmail = await emailService.save(email)
-            setEmails(prevEmail => [...prevEmails, savedEmail])  
+            setEmails(prevEmails => [...prevEmails, savedEmail])  
             showSuccessMsg('Successfully added email')
         } catch (err) {
             console.error(err)
