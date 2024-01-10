@@ -137,7 +137,7 @@ export function EmailIndex() {
     const filterByMenu = {menu: filterBy.menu}
     return (
         <section className="email-index">
-            <section className="layout">
+            <section className="layout container">
                 <section className="filter">
                     <button className="btn-hamberger" onClick={() => setIsMenuOpen(prevIsMenuOpen => !prevIsMenuOpen)}>
                         <MenuIcon />
